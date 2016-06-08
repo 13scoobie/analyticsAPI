@@ -1,0 +1,3 @@
+node_modules/
+dist/
+analytics_api.test.js
