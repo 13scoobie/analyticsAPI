@@ -12,7 +12,7 @@ module.exports = (function init () {
 				if (typeof(cmSetupOther) === 'function') {
 					cmSetupOther({"cm_TrackImpressions":""});
 					// else var cm_TrackImpressions = "";
-					if (typeof cmSetClientID === 'function') cmSetClientID(config.env_vars[client].cm.clientId, false, config.env_vars[client].cm.dataDomain, config.env_vars[client].cookieDomain);
+					if (typeof cmSetClientID === 'function') cmSetClientID(config.env_vars[client].cm.clientId, false, config.env_vars[client].cm.dataDomain, 'nordstrom.com');
 					// else return false;
 					window.cmSet = true;
 					var event = new Event('cmSet');
@@ -29,7 +29,7 @@ module.exports = (function init () {
 			;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
 			p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
 			};p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
-			n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","//d1fc8wv8zag5ca.cloudfront.net/2.6.1/sp.js","snowplow"));	// update library version as they are released, https://github.com/snowplow/snowplow-javascript-tracker/releases
+			n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","https://images.nordstromdata.com/js/sp/2.6.1/sp.js","snowplow"));
 			if (typeof window.snowplow === 'function') {
 				snowplow(
 					'newTracker', 
@@ -37,7 +37,7 @@ module.exports = (function init () {
 					config.env_vars[client].snowplow.collector, 
 					{
 						appId: config.env_vars[client].snowplow.appId,
-						cookieDomain: config.env_vars[client].cookieDomain,
+						cookieDomain: ".nordstrom.com",
 						cookieName: "_sp_",
 						pageUnloadTimer: 0,
 						useCookies: true,
@@ -98,7 +98,7 @@ module.exports = (function init () {
 					window.ga('set', 'dimension1', tracker.get('clientId')); //client id
 					window.ga('set', 'dimension2', sessionID); //session id
 					window.ga('set', 'dimension3', hitTimestamp()); //hit timestamp
-					// add any other custom dimensions here
+					var sendID = (isLoggedIn == 1 || is_recognized == 'Y') ? window.ga('set', 'dimension4', sp_uid) : window.ga('set', 'dimension5', sp_uid);
 				});
 			}
 			window.gaSet = true;

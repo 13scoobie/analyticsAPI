@@ -24,6 +24,7 @@ var bag = require('./bag');
 var registration = require('./registration');
 var conversion = require('./conversion');
 var link_click = require('./link_click');
+var element = require('./element');
 
 window.clickstream = (function(window, undefined) {
 
@@ -41,15 +42,22 @@ window.clickstream = (function(window, undefined) {
 
 	this.link_click = link_click;
 
+	this.element = element;
+
+	analytics_wrapped();
+
 	return {
 		init: init,
 		page_view: page_view,
 		order: order,
+		bag: bag,
+		registration: registration,
+		conversion: conversion,
+		link_click: link_click,
+		element: element,
 		fire: fire,
 		load: load,
 		attrs: attrs
 	};
 
 })(window);
-
-analytics_wrapped();

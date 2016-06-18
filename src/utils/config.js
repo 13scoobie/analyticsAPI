@@ -10,23 +10,23 @@ module.exports = config = (function config () {
 
 	this.env_vars = {
 		client: client,
-		clientA: (function() {
-			var cookieDomain = '.site.com';		// set to your site domain for first-party cookies
-			var prod = (/dev/.test(window.location.hostname.split('.')[0]) ? 0 : 1); 	// adjust to sniff your dev environment
-			var mobile = (window.location.hostname.split('.')[0] === 'm' ? 1 : 0);		// many mobile sites begin with 'm.' but adjust to yours
+		nordstrom: (function() {
+			var prod = (['shop','secure','m'].indexOf(window.location.hostname.split('.')[0]) > -1 ? 1 : 0);
+			var mobile = (window.location.hostname.split('.')[0] === 'm' ? 1 : 0);
 			var cm = (function() {
-				if (mobile && !prod) return { clientId: '66666666', dataDomain: 'testdata.coremetrics.com' };		// dev mobile site, if applicable
-				else if (!mobile && !prod) return { clientId: '99999999', dataDomain: 'testdata.coremetrics.com'};	// dev desktop site
-				else return { clientId: '99999999', dataDomain: 'data.coremetrics.com' };							// prod desktop+mobile, split as necessary; if Client Managed domain, add your custom data domain here
+				if (mobile && !prod) return { clientId: '60408482;81690000|81690004', dataDomain: 'testdata.coremetrics.com' };
+				else if (!mobile && !prod) return { clientId: '60408482;81690000|81690001', dataDomain: 'testdata.coremetrics.com'};
+				else return { clientId: '90033273', dataDomain: '1901.nordstrom.com' };
 			})();
 			var snowplow = {
-				namespace: 'namespace',								// add your desired namespace here
-				collector: (prod ? 'collector.prod.com' : 'collector.test.com'),				// point to your collector domain
-				appId: (mobile ? 'mobile' : 'desktop'),				// customize to any values
-				platform: 'web'										// customize to any value
+				namespace: 'nord' + (prod ? '_prod' : '_dev'),
+				collector: (prod ? 'p.nordstromdata.com' : 't.nordstromdata.com'),
+				appId: (mobile ? 'nord.mow' : 'nord.com'),
+				platform: 'web',
+				cookieDomain: '.nordstrom.com'
 			};
 			var ga = {
-				trackingId: (prod ? 'UA-99999999-9' : 'UA-99999999-9')	// add your GA tracker ID(s)
+				trackingId: (prod ? 'UA-65825786-5' : 'UA-65825786-4')
 			};
 			return {
 				cm: cm,
@@ -34,15 +34,15 @@ module.exports = config = (function config () {
 				ga: ga
 			};
 		})(),
-		clientB: (function() {
-			// if you have a second site, you can configure it here just as above
+		nordstromrack: (function() {
+			// TODO: if valuable
 		})(),
-		clientC: (function() {
-			// third site if applicable
+		hautelook: (function() {
+			// TODO: if valuable
 		})()
 	};
 
 	return {
 		env_vars: this.env_vars
-	};
+	}
 })(window);

@@ -8,6 +8,8 @@ var proxy = require('proxy-agent');
 var fs = require('fs');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
+var watch = require('gulp-watch');
+var batch = require('gulp-batch');
 
 AWS.config.update({
   region: 'us-west-2',
@@ -15,23 +17,23 @@ AWS.config.update({
   httpOptions: { agent: proxy('http://webproxysea.nordstrom.net:8181') }
 });
  
-gulp.task('browserify', function() {
+gulp.task('browserify', function(cb) {
   return browserify('./src/wrapper_API_v0-0-3.js')
     .bundle()
     //Pass desired output filename to vinyl-source-stream
-    .pipe(source('analytics_api.test.js'))
+    .pipe(source('analytics_api.js'))
     // Start piping stream to tasks!
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('compress', function() {
+gulp.task('compress', ['browserify'], function() {
   return gulp.src('./dist/analytics_api.js')
     .pipe(uglify())
     .pipe(rename('analytics_api.min.js'))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('publish', function() {
+gulp.task('publish', ['compress'], function() {
   return fs.readFile('./dist/analytics_api.min.js', function(err, data) {
     if (err) { throw err; }
 
@@ -47,5 +49,11 @@ gulp.task('publish', function() {
   });
 });
 
-gulp.task("default", ["browserify", "compress"]);
-gulp.task("dev", ["browserify"]);
+gulp.task("default", ["browserify", "compress", "publish"]);
+gulp.task("dev", ["browserify", "publish"]);
+
+gulp.task('watch', function () {
+    watch('./src/**/*.js', batch(function (events, done) {
+        gulp.start('default', done);
+    }));
+});

@@ -2,7 +2,7 @@ module.exports = (function registration (data) {
 	try {
 		var cm = function(data) {
 			function fire() {
-				cmCreateRegistrationTag(data.id);
+				cmCreateRegistrationTag(data.shopper_id);
 			}
 			if(window.cmPV && typeof cmCreateRegistrationTag === 'function') fire();
 			else document.addEventListener('cmPV', fire);
@@ -10,7 +10,7 @@ module.exports = (function registration (data) {
 
 		var sp = function(data) {
 			function fire() {
-				snowplow('trackStructEvent', 'registration', 'registration', data.id);
+				snowplow('trackStructEvent', 'registration', 'registration', data.shopper_id);
 			}
 			if(window.spPV && typeof snowplow === 'function') fire();
 			else document.addEventListener('spPV', fire);
