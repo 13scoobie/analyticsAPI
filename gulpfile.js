@@ -10,6 +10,7 @@ var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var watch = require('gulp-watch');
 var batch = require('gulp-batch');
+var gzip = require('gulp-gzip');
 
 AWS.config.update({
   region: 'us-west-2',
@@ -30,6 +31,7 @@ gulp.task('compress', ['browserify'], function() {
   return gulp.src('./dist/analytics_api.js')
     .pipe(uglify())
     .pipe(rename('analytics_api.min.js'))
+    .pipe(gzip({ append: false }))
     .pipe(gulp.dest('dist'));
 });
 
@@ -42,7 +44,8 @@ gulp.task('publish', ['compress'], function() {
       Bucket: 'public-cxar-ato-opt', 
       Key: 'js/analytics_api.min.js', 
       Body: data, 
-      ACL: 'public-read'
+      ACL: 'public-read',
+      ContentEncoding: 'gzip'
     }, function (err, data) {
       console.log(err, data);
     });
