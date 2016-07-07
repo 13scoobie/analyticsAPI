@@ -41,7 +41,7 @@ module.exports = (function page_view (data) {		// tracker name, data
 			var page = {}, product;
 			if (data.page_schema) {
 				page = { 
-					schema: data.page_schema || 'iglu:com.nordstrom/pageview_attrs/jsonschema/0-0-7', 
+					schema: data.page_schema || 'iglu:com.nordstrom/pageview_attrs/jsonschema/0-0-8', 
 					data: {
 						page_url: window.location.href
 						, page_category: data.page_category || null
@@ -57,7 +57,7 @@ module.exports = (function page_view (data) {		// tracker name, data
 			}
 			if (data.product_schema) {
 				product = {
-					schema: data.product_schema || 'iglu:com.nordstrom/product_view_attrs/jsonschema/0-0-2',
+					schema: data.product_schema || 'iglu:com.nordstrom/product_view_attrs/jsonschema/0-0-3',
 					data: {
 						page_url: window.location.href
 						, product_id: data.product_id || null
